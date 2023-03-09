@@ -1,9 +1,20 @@
-import Image from 'next/image';
+import Movie from './Movie';
 
-export default function Home() {
+export default async function Home() {
+  const data = await fetch(
+    `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}`
+  );
+
+  const res = await data.json();
+  const movies = res.results;
+
   return (
     <main>
-      <h1>Hello</h1>
+      <div className='grid gap-10 grid-cols-fluid '>
+        {movies.map((movie) => (
+          <Movie movie={movie} key={movie.id} />
+        ))}
+      </div>
     </main>
   );
 }
